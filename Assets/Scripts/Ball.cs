@@ -19,8 +19,6 @@ namespace Gaggol
 {
     public class Ball : MonoBehaviour
     {
-
-        int _bounces = 0;
         bool _hitOrangeRow;
         bool _hitRedRow;
 
@@ -47,19 +45,34 @@ namespace Gaggol
             }
         }
 
-        private void Update() {
-            if(Input.GetKeyDown(KeyCode.R)) {
-                rb.velocity = Vector2.zero;
-                rb.AddForce(new Vector2(speed, speed), ForceMode2D.Impulse);
+        private void Start() {
+            speedModifier = GameStatus.GetSpeedModifier();
+            Debug.Log(speedModifier + ", " + GameStatus.GetSpeedModifier());
+        }
+
+        private void FixedUpdate() {
+
+            Vector2 vel = rb.velocity;
+
+            if(vel.x < 0) {
+                vel.x = -(speed + speedModifier);
+            } else {
+                vel.x = (speed + speedModifier);
             }
-            if(speedModifier < GameStatus.GetSpeedModifier()) {
-                AddBallSpeedModifier(GameStatus.GetSpeedModifier());
+
+            if(vel.y < 0) {
+                vel.y = -(speed + speedModifier);
+            } else {
+                vel.y = (speed + speedModifier);
             }
+            rb.velocity = vel;
+            speedModifier = GameStatus.GetSpeedModifier();
         }
 
         void AddBounce() {
-            GameStatus.Bounces += 1;
+            GameStatus.AddBounce();
         }
+
         public void ShootBall(bool value = false) {
             if(value) {
                 rb.AddForce(new Vector2(-speed, speed), ForceMode2D.Impulse);
@@ -79,27 +92,35 @@ namespace Gaggol
             _isAlive = false;
         }
 
-        public void AddBallSpeedModifier(float speed) {
-            speedModifier = speed;
-            
-            // FIXME: FIX SPEED MODIFIER
-
-            /*if(rb.velocity.x < 0) {
-                rb.AddForce(new Vector2(-speed, 0));
-            } else {
-                rb.AddForce(new Vector2(speed, 0));
-            }
-            if(rb.velocity.y < 0) {
-                rb.AddForce(new Vector2(0, -speed));
-            } else {
-                rb.AddForce(new Vector2(0, speed));
-            }*/
-        }
-
         Brick _brick;
 
         private void OnCollisionEnter2D(Collision2D collision) {
             Vector3 rot = transform.eulerAngles;
+            /*
+            Vector2 inDirection = rb.velocity;
+
+            while((Mathf.Abs(inDirection.x) + Mathf.Abs(inDirection.y)) < speed) {
+                if(inDirection.x < 0) {
+                    inDirection.x -= .1f;
+                } else {
+                    inDirection.x += .1f;
+                }
+                if(inDirection.y < 0) {
+                    inDirection.y -= .1f;
+                } else {
+                    inDirection.y += .1f;
+                }
+            }
+
+            Vector2 inNormal = collision.contacts[0].normal.normalized;
+
+            Debug.Log(inDirection);
+            Debug.Log(inNormal);
+            Debug.Log(Vector2.Reflect(inDirection, inNormal));
+
+            rb.velocity = Vector2.Reflect(inDirection, inNormal);
+            */
+            //transform.eulerAngles = rot;
 
             if(collision.gameObject.name == "Wall-Bottom") {
                 Death();

@@ -64,6 +64,7 @@ sysinfo.txt
 crashlytics-build.properties
 
 /[Aa]ssets/[Mm]usic/*.*
+/[Aa]ssets/[Mm]usic.meta
 
 # Packed Addressables
 /[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*

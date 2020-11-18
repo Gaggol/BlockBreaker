@@ -22,7 +22,7 @@ namespace Gaggol
         public static bool HasHitOrangeRow { get; set; }
         public static bool HasHitRedRow { get; set; }
 
-        public static int Bounces { get; set; }
+        public static int Bounces { get; private set; }
 
         public static int RedBricks { get; set; }
         public static int OrangeBricks { get; set; }
@@ -70,10 +70,10 @@ namespace Gaggol
 
         public static float GetSpeedModifier() {
             _speedModifier = 0f;
-            if(Bounces == 4) {
-                _speedModifier += .25f;
+            if(Bounces >= 4) {
+                _speedModifier += 10.25f;
             }
-            if(Bounces == 12) {
+            if(Bounces >= 12) {
                 _speedModifier += .25f;
             }
             if(HasHitRedRow) {
@@ -92,6 +92,10 @@ namespace Gaggol
                 return _speedModifier * 2f;
             }
             return _speedModifier;
+        }
+
+        public static void AddBounce() {
+            Bounces += 1;
         }
 
         public static void AddBall() {
