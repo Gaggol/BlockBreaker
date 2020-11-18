@@ -21,6 +21,13 @@ namespace Gaggol
 {
     public class Start_UI : MonoBehaviour
     {
+
+        private void Update() {
+            if(Input.GetKeyDown(KeyCode.Escape)) {
+                Application.Quit();
+            }
+        }
+
         public void PlayButton() {
             GameStatus.Reset();
             SceneManager.LoadScene(1);

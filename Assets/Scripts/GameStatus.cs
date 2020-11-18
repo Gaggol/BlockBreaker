@@ -71,7 +71,7 @@ namespace Gaggol
         public static float GetSpeedModifier() {
             _speedModifier = 0f;
             if(Bounces >= 4) {
-                _speedModifier += 10.25f;
+                _speedModifier += .25f;
             }
             if(Bounces >= 12) {
                 _speedModifier += .25f;
